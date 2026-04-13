@@ -5,6 +5,7 @@ import LayoutShell from "@/components/LayoutShell";
 import { callEngine } from "@/lib/engine/callEngine";
 import type { ExerciseExplanation } from "@/lib/engine/strengthMasteryConfig";
 import BodyMap from "@/components/BodyMap";
+import ExerciseVideo from "@/components/ExerciseVideo";
 
 export default function ExercisePage() {
   const [query, setQuery] = useState("");
@@ -57,13 +58,13 @@ export default function ExercisePage() {
 
         {result && !loading && (
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            {/* Header */}
             <div className="card">
               <h3 style={{ fontSize: "22px", marginBottom: "8px", fontFamily: "Syne, sans-serif" }}>{result.exerciseName}</h3>
               <p style={{ color: "var(--text-secondary)", lineHeight: 1.6, fontSize: "15px" }}>{result.plainSummary}</p>
             </div>
 
-            {/* Body map */}
+            <ExerciseVideo exerciseName={result.exerciseName} />
+
             <div className="card">
               <h4 style={{ fontSize: "13px", letterSpacing: "0.1em", color: "var(--text-muted)", marginBottom: "8px", fontFamily: "Syne, sans-serif" }}>MUSCLE ACTIVATION MAP</h4>
               <div style={{ display: "flex", gap: "16px", marginBottom: "16px", flexWrap: "wrap" }}>
@@ -110,7 +111,6 @@ export default function ExercisePage() {
               </div>
             </div>
 
-            {/* Common mistakes */}
             <div className="card">
               <h4 style={{ fontSize: "13px", letterSpacing: "0.1em", color: "var(--text-muted)", marginBottom: "16px", fontFamily: "Syne, sans-serif" }}>COMMON MISTAKES + FIXES</h4>
               <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
@@ -129,7 +129,6 @@ export default function ExercisePage() {
               </div>
             </div>
 
-            {/* Cues */}
             <div className="card">
               <h4 style={{ fontSize: "13px", letterSpacing: "0.1em", color: "var(--text-muted)", marginBottom: "16px", fontFamily: "Syne, sans-serif" }}>COACHING CUES</h4>
               <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -142,7 +141,6 @@ export default function ExercisePage() {
               </div>
             </div>
 
-            {/* Risk flags */}
             {result.riskFlags.length > 0 && (
               <div className="card" style={{ borderColor: "rgba(232,90,42,0.3)", background: "rgba(232,90,42,0.05)" }}>
                 <h4 style={{ fontSize: "13px", letterSpacing: "0.1em", color: "var(--accent)", marginBottom: "16px", fontFamily: "Syne, sans-serif" }}>⚠ WORTH KNOWING</h4>
