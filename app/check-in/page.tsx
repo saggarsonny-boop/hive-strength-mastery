@@ -47,95 +47,107 @@ function CheckInContent() {
 
   return (
     <LayoutShell>
-      <div className="max-w-lg mx-auto px-4 py-8 space-y-6">
-        <div className="flex border-b">
+      <div style={{ maxWidth: "680px", margin: "0 auto", padding: "48px 24px" }}>
+        <div style={{ marginBottom: "32px" }}>
+          <span className="tag tag-accent" style={{ marginBottom: "16px", display: "inline-block" }}>Check In</span>
+          <h2 style={{ fontSize: "32px" }}>What's going on?</h2>
+        </div>
+
+        {/* Tabs */}
+        <div style={{ display: "flex", borderBottom: "1px solid var(--border)", marginBottom: "32px" }}>
           {(["form", "setback"] as const).map((t) => (
-            <button key={t} onClick={() => setTab(t)}
-              className={`flex-1 py-2 text-sm font-medium border-b-2 transition-colors ${tab === t ? "border-black text-black" : "border-transparent text-gray-400"}`}>
-              {t === "form" ? "Something feels wrong" : "I fell off"}
+            <button key={t} onClick={() => setTab(t)} style={{
+              flex: 1,
+              padding: "12px",
+              background: "none",
+              border: "none",
+              borderBottom: tab === t ? "2px solid var(--accent)" : "2px solid transparent",
+              color: tab === t ? "var(--text-primary)" : "var(--text-secondary)",
+              fontFamily: "Syne, sans-serif",
+              fontWeight: 600,
+              fontSize: "14px",
+              cursor: "pointer",
+              transition: "all 0.15s",
+              marginBottom: "-1px",
+            }}>
+              {t === "form" ? "⚠️ Something feels wrong" : "🔄 I fell off"}
             </button>
           ))}
         </div>
 
         {tab === "form" && !formResult && (
-          <div className="space-y-4">
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             <input placeholder="Exercise (e.g. bench press)" value={formData.exercise}
-              onChange={(e) => setFormData(p => ({ ...p, exercise: e.target.value }))}
-              className="w-full border rounded px-3 py-2 text-sm" />
+              onChange={(e) => setFormData(p => ({ ...p, exercise: e.target.value }))} />
             <input placeholder="What feels wrong" value={formData.issue}
-              onChange={(e) => setFormData(p => ({ ...p, issue: e.target.value }))}
-              className="w-full border rounded px-3 py-2 text-sm" />
+              onChange={(e) => setFormData(p => ({ ...p, issue: e.target.value }))} />
             <input placeholder="Where (optional, e.g. left shoulder)" value={formData.location}
-              onChange={(e) => setFormData(p => ({ ...p, location: e.target.value }))}
-              className="w-full border rounded px-3 py-2 text-sm" />
-            {error && <p className="text-red-500 text-sm">{error}</p>}
-            <button onClick={submitForm} disabled={loading}
-              className="bg-black text-white px-4 py-3 rounded font-medium text-sm hover:opacity-80 disabled:opacity-40 w-full">
-              {loading ? "Checking..." : "Get help"}
+              onChange={(e) => setFormData(p => ({ ...p, location: e.target.value }))} />
+            {error && <p style={{ color: "var(--accent)", fontSize: "14px" }}>{error}</p>}
+            <button onClick={submitForm} disabled={loading} className="btn-primary">
+              {loading ? "Analysing..." : "Get help →"}
             </button>
           </div>
         )}
 
         {tab === "form" && formResult && (
-          <div className="space-y-4 text-sm">
-            <section>
-              <p className="font-semibold">Possible causes</p>
-              <ul className="space-y-1 text-gray-700">
-                {formResult.possibleCauses.map((c, i) => <li key={i}>{c}</li>)}
-              </ul>
-            </section>
-            <section>
-              <p className="font-semibold">Try these adjustments</p>
-              <ul className="space-y-1">
-                {formResult.adjustments.map((a, i) => <li key={i}>{a}</li>)}
-              </ul>
-            </section>
-            <section>
-              <p className="font-semibold">Safer variations</p>
-              <ul className="space-y-1 text-gray-500">
-                {formResult.saferVariations.map((v, i) => <li key={i}>{v}</li>)}
-              </ul>
-            </section>
-            <p className="text-xs text-gray-400 border-t pt-3">{formResult.disclaimer}</p>
-            <button onClick={() => setFormResult(null)}
-              className="bg-white border border-gray-300 text-black px-4 py-3 rounded font-medium text-sm hover:bg-gray-50 w-full">
-              Check another
-            </button>
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            <div className="card">
+              <h4 style={{ fontSize: "13px", letterSpacing: "0.1em", color: "var(--text-muted)", marginBottom: "16px", fontFamily: "Syne, sans-serif" }}>POSSIBLE CAUSES</h4>
+              {formResult.possibleCauses.map((c, i) => (
+                <p key={i} style={{ fontSize: "14px", color: "var(--text-secondary)", marginBottom: "8px", paddingLeft: "12px", borderLeft: "2px solid var(--accent)" }}>{c}</p>
+              ))}
+            </div>
+            <div className="card">
+              <h4 style={{ fontSize: "13px", letterSpacing: "0.1em", color: "var(--text-muted)", marginBottom: "16px", fontFamily: "Syne, sans-serif" }}>ADJUSTMENTS</h4>
+              {formResult.adjustments.map((a, i) => (
+                <p key={i} style={{ fontSize: "14px", color: "var(--text-primary)", marginBottom: "8px" }}>→ {a}</p>
+              ))}
+            </div>
+            <div className="card">
+              <h4 style={{ fontSize: "13px", letterSpacing: "0.1em", color: "var(--text-muted)", marginBottom: "16px", fontFamily: "Syne, sans-serif" }}>SAFER VARIATIONS</h4>
+              {formResult.saferVariations.map((v, i) => (
+                <p key={i} style={{ fontSize: "14px", color: "var(--text-secondary)", marginBottom: "8px" }}>{v}</p>
+              ))}
+            </div>
+            <p style={{ fontSize: "12px", color: "var(--text-muted)", borderTop: "1px solid var(--border)", paddingTop: "16px" }}>{formResult.disclaimer}</p>
+            <button onClick={() => setFormResult(null)} className="btn-secondary">Check another</button>
           </div>
         )}
 
         {tab === "setback" && !setbackResult && (
-          <div className="space-y-4">
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             <textarea placeholder="What happened? Missed sessions, regression, life got in the way..."
               value={setbackData.description}
               onChange={(e) => setSetbackData({ description: e.target.value })}
-              rows={4} className="w-full border rounded px-3 py-2 text-sm" />
-            {error && <p className="text-red-500 text-sm">{error}</p>}
-            <button onClick={submitSetback} disabled={loading}
-              className="bg-black text-white px-4 py-3 rounded font-medium text-sm hover:opacity-80 disabled:opacity-40 w-full">
-              {loading ? "..." : "Help me get back"}
+              rows={5} />
+            {error && <p style={{ color: "var(--accent)", fontSize: "14px" }}>{error}</p>}
+            <button onClick={submitSetback} disabled={loading} className="btn-primary">
+              {loading ? "Thinking..." : "Help me get back →"}
             </button>
           </div>
         )}
 
         {tab === "setback" && setbackResult && (
-          <div className="space-y-4 text-sm">
-            <p>{setbackResult.reframe}</p>
-            <p className="text-gray-500">{setbackResult.normalization}</p>
-            <section>
-              <p className="font-semibold">Small steps back</p>
-              <ul className="space-y-1">
-                {setbackResult.microPlan.map((s, i) => <li key={i}>{s}</li>)}
-              </ul>
-            </section>
-            <div className="bg-gray-50 rounded p-3">
-              <p className="font-semibold text-xs text-gray-400 uppercase tracking-wide mb-1">Start here</p>
-              <p>{setbackResult.firstStep}</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            <div className="card">
+              <p style={{ fontSize: "16px", lineHeight: 1.7, color: "var(--text-primary)", marginBottom: "12px" }}>{setbackResult.reframe}</p>
+              <p style={{ fontSize: "14px", color: "var(--text-secondary)", lineHeight: 1.6 }}>{setbackResult.normalization}</p>
             </div>
-            <button onClick={() => setSetbackResult(null)}
-              className="bg-white border border-gray-300 text-black px-4 py-3 rounded font-medium text-sm hover:bg-gray-50 w-full">
-              Start over
-            </button>
+            <div className="card">
+              <h4 style={{ fontSize: "13px", letterSpacing: "0.1em", color: "var(--text-muted)", marginBottom: "16px", fontFamily: "Syne, sans-serif" }}>SMALL STEPS BACK</h4>
+              {setbackResult.microPlan.map((s, i) => (
+                <div key={i} style={{ display: "flex", gap: "12px", marginBottom: "10px", alignItems: "flex-start" }}>
+                  <span style={{ color: "var(--accent)", fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: "13px", minWidth: "20px" }}>{i + 1}</span>
+                  <p style={{ fontSize: "14px", color: "var(--text-primary)", lineHeight: 1.5 }}>{s}</p>
+                </div>
+              ))}
+            </div>
+            <div className="card" style={{ borderColor: "rgba(76,175,130,0.3)", background: "rgba(76,175,130,0.05)" }}>
+              <h4 style={{ fontSize: "13px", letterSpacing: "0.1em", color: "var(--success)", marginBottom: "12px", fontFamily: "Syne, sans-serif" }}>START HERE</h4>
+              <p style={{ fontSize: "16px", color: "var(--text-primary)", lineHeight: 1.6 }}>{setbackResult.firstStep}</p>
+            </div>
+            <button onClick={() => setSetbackResult(null)} className="btn-secondary">Start over</button>
           </div>
         )}
       </div>
