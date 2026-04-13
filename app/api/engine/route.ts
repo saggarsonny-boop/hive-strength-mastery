@@ -23,24 +23,33 @@ export async function POST(req: NextRequest) {
     },
     body: JSON.stringify({
       model: "claude-haiku-4-5-20251001",
-      max_tokens: 1500,
+      max_tokens: 2000,
       system: systemMessage,
       messages: [{ role: "user", content: userMessage }],
     }),
   });
 
   const data = await response.json();
-  
+
   if (!data.content || !data.content[0]) {
+    console.error("No content in response:", JSON.stringify(data));
     return NextResponse.json({ intent: "error", content: { message: "No response from AI" } });
   }
 
   const raw = data.content[0].text;
+  console.log("Raw AI response:", raw);
+
+  const jsonMatch = raw.match(/\{[\s\S]*\}/);
+  if (!jsonMatch) {
+    console.error("No JSON found in response:", raw);
+    return NextResponse.json({ intent: "error", content: { message: "Could not parse response" } });
+  }
 
   try {
-    const parsed = JSON.parse(raw.trim());
+    const parsed = JSON.parse(jsonMatch[0]);
     return NextResponse.json({ intent: intentId, content: parsed });
-  } catch {
+  } catch (e) {
+    console.error("JSON parse error:", e, "Raw:", raw);
     return NextResponse.json({ intent: "error", content: { message: "Could not parse response" } });
   }
 }
