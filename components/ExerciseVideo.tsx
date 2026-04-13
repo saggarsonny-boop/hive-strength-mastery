@@ -6,30 +6,67 @@ interface ExerciseVideoProps {
 
 export default function ExerciseVideo({ exerciseName }: ExerciseVideoProps) {
   const query = encodeURIComponent(`${exerciseName} proper form technique`);
-  const embedUrl = `https://www.youtube.com/embed?listType=search&list=${query}&index=0`;
   const searchUrl = `https://www.youtube.com/results?search_query=${query}`;
+  const jeffNippardUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(exerciseName + " Jeff Nippard form")}`;
+  const athleanUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(exerciseName + " Athlean-X form")}`;
 
   return (
     <div className="card">
       <h4 style={{ fontSize: "13px", letterSpacing: "0.1em", color: "var(--text-muted)", marginBottom: "16px", fontFamily: "Syne, sans-serif" }}>WATCH THE MOVEMENT</h4>
-      <div style={{ position: "relative", paddingBottom: "56.25%", height: 0, borderRadius: "8px", overflow: "hidden", background: "var(--bg-elevated)" }}>
-        <iframe
-          src={`https://www.youtube.com/embed?listType=search&list=${query}`}
-          style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none" }}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          title={`${exerciseName} technique video`}
-        />
+      <p style={{ fontSize: "13px", color: "var(--text-secondary)", marginBottom: "16px", lineHeight: 1.5 }}>
+        Watch curated form guides from trusted coaches on YouTube.
+      </p>
+      <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+        <a href={searchUrl} target="_blank" rel="noopener noreferrer" style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "12px 16px",
+          background: "var(--bg-elevated)",
+          border: "1px solid var(--border)",
+          borderRadius: "8px",
+          textDecoration: "none",
+          color: "var(--text-primary)",
+          fontSize: "14px",
+          fontWeight: 500,
+          transition: "border-color 0.15s",
+        }}>
+          <span>▶ Search: {exerciseName} form guide</span>
+          <span style={{ color: "var(--text-muted)", fontSize: "12px" }}>YouTube →</span>
+        </a>
+        <a href={jeffNippardUrl} target="_blank" rel="noopener noreferrer" style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "12px 16px",
+          background: "var(--bg-elevated)",
+          border: "1px solid var(--border)",
+          borderRadius: "8px",
+          textDecoration: "none",
+          color: "var(--text-secondary)",
+          fontSize: "13px",
+          transition: "border-color 0.15s",
+        }}>
+          <span>▶ Jeff Nippard — {exerciseName}</span>
+          <span style={{ color: "var(--text-muted)", fontSize: "12px" }}>YouTube →</span>
+        </a>
+        <a href={athleanUrl} target="_blank" rel="noopener noreferrer" style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "12px 16px",
+          background: "var(--bg-elevated)",
+          border: "1px solid var(--border)",
+          borderRadius: "8px",
+          textDecoration: "none",
+          color: "var(--text-secondary)",
+          fontSize: "13px",
+          transition: "border-color 0.15s",
+        }}>
+          <span>▶ Athlean-X — {exerciseName}</span>
+          <span style={{ color: "var(--text-muted)", fontSize: "12px" }}>YouTube →</span>
+        </a>
       </div>
-      <a href={searchUrl} target="_blank" rel="noopener noreferrer" style={{
-        display: "block",
-        marginTop: "12px",
-        fontSize: "13px",
-        color: "var(--text-secondary)",
-        textDecoration: "none",
-      }}>
-        Search more videos on YouTube →
-      </a>
     </div>
   );
 }
