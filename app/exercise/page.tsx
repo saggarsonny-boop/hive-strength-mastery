@@ -4,110 +4,7 @@ import { useState } from "react";
 import LayoutShell from "@/components/LayoutShell";
 import { callEngine } from "@/lib/engine/callEngine";
 import type { ExerciseExplanation } from "@/lib/engine/strengthMasteryConfig";
-
-function BodyMap({ primaryMuscles, secondaryMuscles }: { primaryMuscles: string[]; secondaryMuscles: string[] }) {
-  const getRegionColor = (region: string) => {
-    const p = primaryMuscles.join(" ").toLowerCase();
-    const s = secondaryMuscles.join(" ").toLowerCase();
-    const r = region.toLowerCase();
-    if (p.includes(r)) return "var(--muscle-primary)";
-    if (s.includes(r)) return "var(--muscle-secondary)";
-    return "var(--bg-elevated)";
-  };
-
-  const chest = getRegionColor("chest") !== "var(--bg-elevated)" ? getRegionColor("chest") : 
-    primaryMuscles.join(" ").toLowerCase().includes("pec") ? "var(--muscle-primary)" :
-    secondaryMuscles.join(" ").toLowerCase().includes("pec") ? "var(--muscle-secondary)" : "var(--bg-elevated)";
-
-  const shoulders = getRegionColor("delt") !== "var(--bg-elevated)" ? getRegionColor("delt") :
-    getRegionColor("shoulder");
-
-  const biceps = getRegionColor("bicep");
-  const triceps = getRegionColor("tricep");
-  const forearms = getRegionColor("forearm");
-
-  const abs = getRegionColor("abs") !== "var(--bg-elevated)" ? getRegionColor("abs") :
-    getRegionColor("core") !== "var(--bg-elevated)" ? getRegionColor("core") :
-    getRegionColor("abdomin");
-
-  const quads = getRegionColor("quad") !== "var(--bg-elevated)" ? getRegionColor("quad") :
-    getRegionColor("thigh");
-
-  const hamstrings = getRegionColor("hamstring");
-  const glutes = getRegionColor("glut");
-  const calves = getRegionColor("calf") !== "var(--bg-elevated)" ? getRegionColor("calf") : getRegionColor("gastro");
-
-  const lats = getRegionColor("lat") !== "var(--bg-elevated)" ? getRegionColor("lat") : getRegionColor("back");
-  const traps = getRegionColor("trap");
-  const lowerBack = getRegionColor("lower back") !== "var(--bg-elevated)" ? getRegionColor("lower back") : getRegionColor("erector");
-
-  return (
-    <div style={{ display: "flex", gap: "32px", justifyContent: "center", padding: "24px 0" }}>
-      {/* Front view */}
-      <div style={{ textAlign: "center" }}>
-        <p style={{ fontSize: "11px", color: "var(--text-muted)", marginBottom: "8px", letterSpacing: "0.1em" }}>FRONT</p>
-        <svg width="100" height="200" viewBox="0 0 100 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-          {/* Head */}
-          <circle cx="50" cy="18" r="14" fill="var(--bg-elevated)" stroke="var(--border)" strokeWidth="1"/>
-          {/* Neck */}
-          <rect x="44" y="30" width="12" height="10" rx="2" fill="var(--bg-elevated)" stroke="var(--border)" strokeWidth="1"/>
-          {/* Shoulders */}
-          <ellipse cx="25" cy="45" rx="12" ry="8" fill={shoulders} stroke="var(--border)" strokeWidth="1"/>
-          <ellipse cx="75" cy="45" rx="12" ry="8" fill={shoulders} stroke="var(--border)" strokeWidth="1"/>
-          {/* Chest */}
-          <rect x="32" y="38" width="36" height="28" rx="4" fill={chest} stroke="var(--border)" strokeWidth="1"/>
-          {/* Upper arms */}
-          <rect x="13" y="50" width="10" height="30" rx="5" fill={biceps} stroke="var(--border)" strokeWidth="1"/>
-          <rect x="77" y="50" width="10" height="30" rx="5" fill={biceps} stroke="var(--border)" strokeWidth="1"/>
-          {/* Forearms */}
-          <rect x="13" y="83" width="10" height="28" rx="5" fill={forearms} stroke="var(--border)" strokeWidth="1"/>
-          <rect x="77" y="83" width="10" height="28" rx="5" fill={forearms} stroke="var(--border)" strokeWidth="1"/>
-          {/* Abs */}
-          <rect x="35" y="68" width="30" height="38" rx="4" fill={abs} stroke="var(--border)" strokeWidth="1"/>
-          {/* Quads */}
-          <rect x="34" y="108" width="13" height="45" rx="6" fill={quads} stroke="var(--border)" strokeWidth="1"/>
-          <rect x="53" y="108" width="13" height="45" rx="6" fill={quads} stroke="var(--border)" strokeWidth="1"/>
-          {/* Calves front */}
-          <rect x="34" y="156" width="13" height="36" rx="6" fill={calves} stroke="var(--border)" strokeWidth="1"/>
-          <rect x="53" y="156" width="13" height="36" rx="6" fill={calves} stroke="var(--border)" strokeWidth="1"/>
-        </svg>
-      </div>
-
-      {/* Back view */}
-      <div style={{ textAlign: "center" }}>
-        <p style={{ fontSize: "11px", color: "var(--text-muted)", marginBottom: "8px", letterSpacing: "0.1em" }}>BACK</p>
-        <svg width="100" height="200" viewBox="0 0 100 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-          {/* Head */}
-          <circle cx="50" cy="18" r="14" fill="var(--bg-elevated)" stroke="var(--border)" strokeWidth="1"/>
-          {/* Neck */}
-          <rect x="44" y="30" width="12" height="10" rx="2" fill="var(--bg-elevated)" stroke="var(--border)" strokeWidth="1"/>
-          {/* Traps */}
-          <ellipse cx="25" cy="45" rx="12" ry="8" fill={traps} stroke="var(--border)" strokeWidth="1"/>
-          <ellipse cx="75" cy="45" rx="12" ry="8" fill={traps} stroke="var(--border)" strokeWidth="1"/>
-          {/* Lats / Upper back */}
-          <rect x="32" y="38" width="36" height="28" rx="4" fill={lats} stroke="var(--border)" strokeWidth="1"/>
-          {/* Triceps */}
-          <rect x="13" y="50" width="10" height="30" rx="5" fill={triceps} stroke="var(--border)" strokeWidth="1"/>
-          <rect x="77" y="50" width="10" height="30" rx="5" fill={triceps} stroke="var(--border)" strokeWidth="1"/>
-          {/* Forearms back */}
-          <rect x="13" y="83" width="10" height="28" rx="5" fill={forearms} stroke="var(--border)" strokeWidth="1"/>
-          <rect x="77" y="83" width="10" height="28" rx="5" fill={forearms} stroke="var(--border)" strokeWidth="1"/>
-          {/* Lower back */}
-          <rect x="35" y="68" width="30" height="38" rx="4" fill={lowerBack} stroke="var(--border)" strokeWidth="1"/>
-          {/* Glutes */}
-          <rect x="34" y="105" width="14" height="20" rx="6" fill={glutes} stroke="var(--border)" strokeWidth="1"/>
-          <rect x="52" y="105" width="14" height="20" rx="6" fill={glutes} stroke="var(--border)" strokeWidth="1"/>
-          {/* Hamstrings */}
-          <rect x="34" y="127" width="13" height="30" rx="6" fill={hamstrings} stroke="var(--border)" strokeWidth="1"/>
-          <rect x="53" y="127" width="13" height="30" rx="6" fill={hamstrings} stroke="var(--border)" strokeWidth="1"/>
-          {/* Calves back */}
-          <rect x="34" y="160" width="13" height="32" rx="6" fill={calves} stroke="var(--border)" strokeWidth="1"/>
-          <rect x="53" y="160" width="13" height="32" rx="6" fill={calves} stroke="var(--border)" strokeWidth="1"/>
-        </svg>
-      </div>
-    </div>
-  );
-}
+import BodyMap from "@/components/BodyMap";
 
 export default function ExercisePage() {
   const [query, setQuery] = useState("");
@@ -166,9 +63,20 @@ export default function ExercisePage() {
               <p style={{ color: "var(--text-secondary)", lineHeight: 1.6, fontSize: "15px" }}>{result.plainSummary}</p>
             </div>
 
-            {/* Body map + muscles */}
+            {/* Body map */}
             <div className="card">
-              <h4 style={{ fontSize: "13px", letterSpacing: "0.1em", color: "var(--text-muted)", marginBottom: "16px", fontFamily: "Syne, sans-serif" }}>MUSCLE ACTIVATION MAP</h4>
+              <h4 style={{ fontSize: "13px", letterSpacing: "0.1em", color: "var(--text-muted)", marginBottom: "8px", fontFamily: "Syne, sans-serif" }}>MUSCLE ACTIVATION MAP</h4>
+              <div style={{ display: "flex", gap: "16px", marginBottom: "16px", flexWrap: "wrap" }}>
+                <span style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", color: "var(--text-secondary)" }}>
+                  <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#e8453c", display: "inline-block" }} /> Primary
+                </span>
+                <span style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", color: "var(--text-secondary)" }}>
+                  <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#f5a623", display: "inline-block" }} /> Secondary
+                </span>
+                <span style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", color: "var(--text-secondary)" }}>
+                  <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#1e1e1e", border: "1px solid #2a2a2a", display: "inline-block" }} /> Not targeted
+                </span>
+              </div>
               <BodyMap primaryMuscles={result.primaryMuscles} secondaryMuscles={result.secondaryMuscles} />
               <hr className="divider" />
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "12px" }}>
