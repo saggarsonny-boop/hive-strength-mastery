@@ -61,37 +61,63 @@ export default function SessionPage() {
   if (result) {
     return (
       <LayoutShell>
-        <div className="max-w-lg mx-auto px-4 py-8 space-y-6">
-          <h2 className="text-2xl font-bold">Your Session</h2>
-          <p className="text-gray-500">{result.durationMinutes} min · Focus: {result.techniqueFocus}</p>
-          <section>
-            <p className="font-semibold mb-2">Warm-up</p>
-            <ul className="space-y-1 text-sm">
-              {result.warmUp.map((w, i) => <li key={i}>{w}</li>)}
-            </ul>
-          </section>
-          <section>
-            <p className="font-semibold mb-2">Exercises</p>
-            <div className="space-y-4">
-              {result.exercises.map((ex, i) => (
-                <div key={i} className="border rounded p-3 space-y-1">
-                  <p className="font-medium">{ex.name}</p>
-                  <p className="text-sm text-gray-600">{ex.sets} sets · {ex.repsOrDuration}{ex.rpe ? ` · ${ex.rpe}` : ""}</p>
-                  <p className="text-sm">{ex.techniqueNote}</p>
-                  {ex.alternative && (
-                    <p className="text-xs text-gray-400">If this hurts: {ex.alternative}</p>
-                  )}
+        <div style={{ maxWidth: "680px", margin: "0 auto", padding: "48px 24px" }}>
+          <div style={{ marginBottom: "24px" }}>
+            <span className="tag tag-accent" style={{ marginBottom: "12px", display: "inline-block" }}>Your Session</span>
+            <h2 style={{ fontSize: "32px", marginBottom: "8px" }}>{result.goal}</h2>
+            <p style={{ color: "var(--text-secondary)", fontSize: "14px" }}>{result.durationMinutes} min · Focus: {result.techniqueFocus}</p>
+          </div>
+
+          {/* Pattern coverage */}
+          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "24px" }}>
+            {result.patternsCovered.map((p) => (
+              <span key={p} className="tag tag-amber">{p}</span>
+            ))}
+          </div>
+
+          {/* Warm up */}
+          <div className="card" style={{ marginBottom: "16px" }}>
+            <h4 style={{ fontSize: "13px", letterSpacing: "0.1em", color: "var(--text-muted)", marginBottom: "16px", fontFamily: "Syne, sans-serif" }}>WARM UP</h4>
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+              {result.warmUp.map((w, i) => (
+                <div key={i} style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
+                  <span style={{ color: "var(--accent-amber)", fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: "13px", minWidth: "20px" }}>{i + 1}</span>
+                  <p style={{ fontSize: "14px", color: "var(--text-secondary)", lineHeight: 1.5 }}>{w}</p>
                 </div>
               ))}
             </div>
-          </section>
+          </div>
+
+          {/* Exercises */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "16px" }}>
+            {result.exercises.map((ex, i) => (
+              <div key={i} className="card">
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "8px" }}>
+                  <h4 style={{ fontFamily: "Syne, sans-serif", fontSize: "16px", fontWeight: 700 }}>{ex.name}</h4>
+                  <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", justifyContent: "flex-end" }}>
+                    <span className="tag">{ex.sets} sets</span>
+                    <span className="tag">{ex.repsOrDuration}</span>
+                    {ex.rpe && <span className="tag tag-accent">{ex.rpe}</span>}
+                  </div>
+                </div>
+                <p style={{ fontSize: "13px", color: "var(--text-secondary)", lineHeight: 1.5, marginBottom: ex.alternative ? "8px" : "0" }}>{ex.techniqueNote}</p>
+                {ex.alternative && (
+                  <p style={{ fontSize: "12px", color: "var(--text-muted)", paddingTop: "8px", borderTop: "1px solid var(--border)" }}>
+                    If this hurts: {ex.alternative}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Notes */}
           {result.notes && (
-            <section>
-              <p className="text-sm text-gray-500">{result.notes}</p>
-            </section>
+            <div className="card" style={{ marginBottom: "16px", borderColor: "rgba(74,158,255,0.2)", background: "rgba(74,158,255,0.05)" }}>
+              <p style={{ fontSize: "13px", color: "var(--text-secondary)", lineHeight: 1.6 }}>{result.notes}</p>
+            </div>
           )}
-          <button onClick={() => { setResult(null); setStep("goal"); }}
-            className="bg-white border border-gray-300 text-black px-4 py-3 rounded font-medium text-sm hover:bg-gray-50 w-full">
+
+          <button onClick={() => { setResult(null); setStep("goal"); }} className="btn-secondary">
             Build another session
           </button>
         </div>
@@ -101,102 +127,148 @@ export default function SessionPage() {
 
   return (
     <LayoutShell>
-      <div className="max-w-lg mx-auto px-4 py-8 space-y-6">
-        <h2 className="text-2xl font-bold">Design my session</h2>
-        <div className="flex gap-1">
+      <div style={{ maxWidth: "680px", margin: "0 auto", padding: "48px 24px" }}>
+        <div style={{ marginBottom: "32px" }}>
+          <span className="tag tag-accent" style={{ marginBottom: "16px", display: "inline-block" }}>Session Builder</span>
+          <h2 style={{ fontSize: "32px", marginBottom: "8px" }}>Design my session</h2>
+          <p style={{ color: "var(--text-secondary)", fontSize: "15px" }}>Answer 5 quick questions. Get a full session built around you.</p>
+        </div>
+
+        {/* Progress */}
+        <div style={{ display: "flex", gap: "4px", marginBottom: "32px" }}>
           {STEPS.map((s, i) => (
-            <div key={s} className={`h-1 flex-1 rounded ${i <= stepIndex ? "bg-black" : "bg-gray-200"}`} />
+            <div key={s} style={{
+              flex: 1,
+              height: "3px",
+              borderRadius: "2px",
+              background: i <= stepIndex ? "var(--accent)" : "var(--border)",
+              transition: "background 0.3s",
+            }} />
           ))}
         </div>
+
         {step === "goal" && (
-          <div className="space-y-3">
-            <p className="font-medium">What is your goal today?</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            <p style={{ fontFamily: "Syne, sans-serif", fontWeight: 600, fontSize: "18px", marginBottom: "8px" }}>What's your goal today?</p>
             {[
-              { id: "just_get_started", label: "Just get started" },
-              { id: "strength", label: "Build strength" },
-              { id: "hypertrophy", label: "Build muscle" },
-              { id: "longevity", label: "Move well for longer" },
+              { id: "just_get_started", label: "Just get started", desc: "I want to move and feel good" },
+              { id: "strength", label: "Build strength", desc: "Progressive overload, heavier over time" },
+              { id: "hypertrophy", label: "Build muscle", desc: "Volume and pump focused" },
+              { id: "longevity", label: "Move well for longer", desc: "Joint health and movement quality" },
             ].map((o) => (
-              <button key={o.id} onClick={() => update("primaryGoal", o.id)}
-                className={`w-full text-left px-4 py-3 rounded border text-sm ${form.primaryGoal === o.id ? "border-black font-medium" : "border-gray-200"}`}>
-                {o.label}
+              <button key={o.id} onClick={() => update("primaryGoal", o.id)} style={{
+                textAlign: "left",
+                padding: "16px 20px",
+                borderRadius: "10px",
+                border: `1px solid ${form.primaryGoal === o.id ? "var(--accent)" : "var(--border)"}`,
+                background: form.primaryGoal === o.id ? "var(--accent-soft)" : "var(--bg-card)",
+                cursor: "pointer",
+                transition: "all 0.15s",
+              }}>
+                <p style={{ fontFamily: "Syne, sans-serif", fontWeight: 600, fontSize: "14px", color: "var(--text-primary)", marginBottom: "2px" }}>{o.label}</p>
+                <p style={{ fontSize: "12px", color: "var(--text-secondary)" }}>{o.desc}</p>
               </button>
             ))}
           </div>
         )}
+
         {step === "equipment" && (
-          <div className="space-y-3">
-            <p className="font-medium">What equipment do you have?</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            <p style={{ fontFamily: "Syne, sans-serif", fontWeight: 600, fontSize: "18px", marginBottom: "8px" }}>What equipment do you have?</p>
             {[
-              { id: "full_gym", label: "Full gym" },
-              { id: "home_basic", label: "Home gym (some equipment)" },
-              { id: "minimal", label: "Minimal (bands, dumbbells)" },
-              { id: "bodyweight_only", label: "Bodyweight only" },
+              { id: "full_gym", label: "Full gym", desc: "Barbells, cables, machines, everything" },
+              { id: "home_basic", label: "Home gym", desc: "Dumbbells, bench, maybe a bar" },
+              { id: "minimal", label: "Minimal", desc: "Bands, dumbbells, limited kit" },
+              { id: "bodyweight_only", label: "Bodyweight only", desc: "No equipment needed" },
             ].map((o) => (
-              <button key={o.id} onClick={() => update("equipment", o.id)}
-                className={`w-full text-left px-4 py-3 rounded border text-sm ${form.equipment === o.id ? "border-black font-medium" : "border-gray-200"}`}>
-                {o.label}
+              <button key={o.id} onClick={() => update("equipment", o.id)} style={{
+                textAlign: "left",
+                padding: "16px 20px",
+                borderRadius: "10px",
+                border: `1px solid ${form.equipment === o.id ? "var(--accent)" : "var(--border)"}`,
+                background: form.equipment === o.id ? "var(--accent-soft)" : "var(--bg-card)",
+                cursor: "pointer",
+                transition: "all 0.15s",
+              }}>
+                <p style={{ fontFamily: "Syne, sans-serif", fontWeight: 600, fontSize: "14px", color: "var(--text-primary)", marginBottom: "2px" }}>{o.label}</p>
+                <p style={{ fontSize: "12px", color: "var(--text-secondary)" }}>{o.desc}</p>
               </button>
             ))}
           </div>
         )}
+
         {step === "time" && (
-          <div className="space-y-3">
-            <p className="font-medium">How long do you have?</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            <p style={{ fontFamily: "Syne, sans-serif", fontWeight: 600, fontSize: "18px", marginBottom: "8px" }}>How long do you have?</p>
             {[20, 30, 45, 60, 90].map((t) => (
-              <button key={t} onClick={() => update("timeAvailable", t)}
-                className={`w-full text-left px-4 py-3 rounded border text-sm ${form.timeAvailable === t ? "border-black font-medium" : "border-gray-200"}`}>
-                {t} minutes
+              <button key={t} onClick={() => update("timeAvailable", t)} style={{
+                textAlign: "left",
+                padding: "16px 20px",
+                borderRadius: "10px",
+                border: `1px solid ${form.timeAvailable === t ? "var(--accent)" : "var(--border)"}`,
+                background: form.timeAvailable === t ? "var(--accent-soft)" : "var(--bg-card)",
+                cursor: "pointer",
+                transition: "all 0.15s",
+              }}>
+                <p style={{ fontFamily: "Syne, sans-serif", fontWeight: 600, fontSize: "14px", color: "var(--text-primary)" }}>{t} minutes</p>
               </button>
             ))}
           </div>
         )}
+
         {step === "experience" && (
-          <div className="space-y-3">
-            <p className="font-medium">How experienced are you?</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            <p style={{ fontFamily: "Syne, sans-serif", fontWeight: 600, fontSize: "18px", marginBottom: "8px" }}>How experienced are you?</p>
             {[
-              { id: "beginner", label: "New to lifting" },
-              { id: "returning", label: "Returning after a break" },
-              { id: "intermediate", label: "Consistent for 1-3 years" },
-              { id: "advanced", label: "4+ years, know my programming" },
+              { id: "beginner", label: "New to lifting", desc: "Never really trained with weights before" },
+              { id: "returning", label: "Returning after a break", desc: "Used to train, now getting back into it" },
+              { id: "intermediate", label: "Consistent for 1-3 years", desc: "I know the basics, want to go deeper" },
+              { id: "advanced", label: "4+ years", desc: "I know my programming, want biomechanics depth" },
             ].map((o) => (
-              <button key={o.id} onClick={() => update("experienceLevel", o.id)}
-                className={`w-full text-left px-4 py-3 rounded border text-sm ${form.experienceLevel === o.id ? "border-black font-medium" : "border-gray-200"}`}>
-                {o.label}
+              <button key={o.id} onClick={() => update("experienceLevel", o.id)} style={{
+                textAlign: "left",
+                padding: "16px 20px",
+                borderRadius: "10px",
+                border: `1px solid ${form.experienceLevel === o.id ? "var(--accent)" : "var(--border)"}`,
+                background: form.experienceLevel === o.id ? "var(--accent-soft)" : "var(--bg-card)",
+                cursor: "pointer",
+                transition: "all 0.15s",
+              }}>
+                <p style={{ fontFamily: "Syne, sans-serif", fontWeight: 600, fontSize: "14px", color: "var(--text-primary)", marginBottom: "2px" }}>{o.label}</p>
+                <p style={{ fontSize: "12px", color: "var(--text-secondary)" }}>{o.desc}</p>
               </button>
             ))}
           </div>
         )}
+
         {step === "constraints" && (
-          <div className="space-y-3">
-            <p className="font-medium">Any injuries or constraints?</p>
-            <p className="text-sm text-gray-500">For example: avoid deep knee flexion, left shoulder impingement. Leave blank if none.</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+            <p style={{ fontFamily: "Syne, sans-serif", fontWeight: 600, fontSize: "18px", marginBottom: "4px" }}>Any injuries or constraints?</p>
+            <p style={{ fontSize: "13px", color: "var(--text-secondary)", marginBottom: "4px" }}>e.g. "avoid deep knee flexion, left shoulder impingement". Leave blank if none.</p>
             <textarea
               value={form.injuriesOrConstraints}
               onChange={(e) => update("injuriesOrConstraints", e.target.value)}
-              rows={3}
-              className="w-full border rounded px-3 py-2 text-sm"
-              placeholder="Type your constraints here, or leave blank"
+              rows={4}
+              placeholder="Type your constraints here, or leave blank..."
             />
           </div>
         )}
-        {error && <p className="text-red-500 text-sm">{error}</p>}
-        <div className="flex gap-3">
+
+        {error && <p style={{ color: "var(--accent)", fontSize: "14px", marginTop: "12px" }}>{error}</p>}
+
+        <div style={{ display: "flex", gap: "12px", marginTop: "24px" }}>
           {stepIndex > 0 && (
-            <button onClick={() => setStep(STEPS[stepIndex - 1])}
-              className="bg-white border border-gray-300 text-black px-4 py-3 rounded font-medium text-sm hover:bg-gray-50 flex-1">
+            <button onClick={() => setStep(STEPS[stepIndex - 1])} className="btn-secondary" style={{ flex: 1 }}>
               Back
             </button>
           )}
           {!isLast ? (
-            <button onClick={() => setStep(STEPS[stepIndex + 1])}
-              className="bg-black text-white px-4 py-3 rounded font-medium text-sm hover:opacity-80 flex-1">
-              Next
+            <button onClick={() => setStep(STEPS[stepIndex + 1])} className="btn-primary" style={{ flex: 1 }}>
+              Next →
             </button>
           ) : (
-            <button onClick={submit} disabled={loading}
-              className="bg-black text-white px-4 py-3 rounded font-medium text-sm hover:opacity-80 disabled:opacity-40 flex-1">
-              {loading ? "Building your session..." : "Build my session"}
+            <button onClick={submit} disabled={loading} className="btn-primary" style={{ flex: 1 }}>
+              {loading ? "Building your session..." : "Build my session →"}
             </button>
           )}
         </div>
