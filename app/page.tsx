@@ -33,7 +33,6 @@ export default function Home() {
           Strength training from first principles. No shame, no fluff — just clear biomechanics, personalized guidance, and AI that actually understands how your body moves.
         </p>
 
-        {/* Primary actions */}
         <div style={{ display: "grid", gap: "12px", marginBottom: "48px" }}>
           <Link href="/exercise" style={{
             background: "var(--accent)",
@@ -72,10 +71,8 @@ export default function Home() {
           </Link>
         </div>
 
-        {/* Divider */}
         <hr className="divider" />
 
-        {/* Secondary actions */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
           <Link href="/check-in?tab=form" style={{
             background: "var(--bg-card)",
@@ -109,7 +106,6 @@ export default function Home() {
           </Link>
         </div>
 
-        {/* Feature tags */}
         <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginTop: "48px" }}>
           {["Anatomy-based", "Shame-free", "Injury-aware", "Evidence-informed", "No body-shaming"].map((tag) => (
             <span key={tag} className="tag">{tag}</span>
@@ -148,6 +144,72 @@ export default function Home() {
               <p style={{ fontSize: "12px", color: "var(--text-secondary)", lineHeight: 1.5 }}>{f.desc}</p>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Support section */}
+      <div style={{
+        borderTop: "1px solid var(--border)",
+        padding: "48px 24px",
+        maxWidth: "680px",
+        margin: "0 auto",
+      }}>
+        <p style={{
+          fontSize: "12px",
+          color: "var(--text-muted)",
+          marginBottom: "16px",
+          letterSpacing: "0.08em",
+          fontFamily: "Syne, sans-serif",
+        }}>SUPPORT THE HIVE COMMUNITY</p>
+        <p style={{
+          fontSize: "13px",
+          color: "var(--text-secondary)",
+          marginBottom: "20px",
+          lineHeight: 1.6,
+          maxWidth: "420px",
+        }}>
+          This engine is free to use. If it helps you train smarter, consider supporting the community that keeps experimental tools like this one alive.
+        </p>
+        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+          <a href="https://buy.stripe.com/14A6oJ6Mv3sReEa0YV0RG00" target="_blank" rel="noopener noreferrer" style={{
+            padding: "8px 16px",
+            borderRadius: "6px",
+            border: "1px solid var(--border)",
+            color: "var(--text-muted)",
+            fontSize: "12px",
+            textDecoration: "none",
+            fontFamily: "Syne, sans-serif",
+            fontWeight: 600,
+            transition: "border-color 0.15s, color 0.15s",
+          }}>
+            $1.99 / month
+          </a>
+          <a href="https://buy.stripe.com/7sYcN79YHe7v53AcHD0RG01" target="_blank" rel="noopener noreferrer" style={{
+            padding: "8px 16px",
+            borderRadius: "6px",
+            border: "1px solid var(--border)",
+            color: "var(--text-muted)",
+            fontSize: "12px",
+            textDecoration: "none",
+            fontFamily: "Syne, sans-serif",
+            fontWeight: 600,
+            transition: "border-color 0.15s, color 0.15s",
+          }}>
+            $19 / year
+          </a>
+          <a href="https://buy.stripe.com/9B6aEZ7Qzd3rcw2bDz0RG02" target="_blank" rel="noopener noreferrer" style={{
+            padding: "8px 16px",
+            borderRadius: "6px",
+            border: "1px solid var(--border)",
+            color: "var(--text-muted)",
+            fontSize: "12px",
+            textDecoration: "none",
+            fontFamily: "Syne, sans-serif",
+            fontWeight: 600,
+            transition: "border-color 0.15s, color 0.15s",
+          }}>
+            $5 one-time
+          </a>
         </div>
       </div>
     </LayoutShell>
