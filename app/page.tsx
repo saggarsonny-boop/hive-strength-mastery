@@ -1,9 +1,11 @@
 import Link from "next/link";
 import LayoutShell from "@/components/LayoutShell";
+import AutoDemo from "@/components/AutoDemo";
 
 export default function Home() {
   return (
     <LayoutShell>
+      <AutoDemo />
       {/* Hero */}
       <div style={{
         maxWidth: "680px",
