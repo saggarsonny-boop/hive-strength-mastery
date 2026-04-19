@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Hive Strength Mastery",
+  title: "HiveStrength",
   description: "Strength training from first principles. Personalized, shame-free, built on biomechanics.",
   manifest: "/manifest.json",
+  icons: { icon: "/favicon.svg", apple: "/favicon.svg" },
 };
 
 
