@@ -2,12 +2,18 @@ import Link from "next/link";
 import LayoutShell from "@/components/LayoutShell";
 import AutoDemo from "@/components/AutoDemo";
 import FirstVisitCard from "@/components/FirstVisitCard";
+import TooltipTour from "@/components/TooltipTour";
 
 export default function Home() {
   return (
     <LayoutShell>
       <AutoDemo />
       <FirstVisitCard />
+      <TooltipTour engineId="hivestrength" tips={[
+        { label: "Tell it where you're stuck", text: "Describe your current lift, weight, reps, and how long you've been stuck." },
+        { label: "AI strength coach", text: "Returns a specific protocol — deload, volume tweak, technique cue — based on your exact situation." },
+        { label: "Follow-up questions", text: "Ask follow-ups in the same session to refine the plan." },
+      ]} />
       {/* Hero */}
       <div style={{
         maxWidth: "680px",
